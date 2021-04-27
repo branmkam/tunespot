@@ -13,7 +13,8 @@ export default function Game()
     )
 }
 
-let highscore = '';
+let highscore, oldStats = '';
+
 export let initGame = async function()
 {
     window.clickTime = '';
@@ -42,8 +43,7 @@ export let initGame = async function()
 
     //do all async firebase calls here
     highscore = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores/${fireAuth.currentUser.uid}`).get().then(snapshot => snapshot.val()); 
-    console.log(!highscore);
-    console.log(tracks.data.href);
+    oldStats = await fireDb.ref(`users/${fireAuth.currentUser.uid}`).get().then(snapshot => snapshot.val());
 }
 
 function pressStart()
@@ -123,6 +123,7 @@ async function buttonResults()
             fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores`).update(
                 {
                     [`${fireAuth.currentUser.uid}`]: window.score,
+                    attempted: oldStats.attempted ? oldStats.attempted.push(window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]) : [...window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]],
                 }
             )
         }

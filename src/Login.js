@@ -49,18 +49,17 @@ function Login() {
                     <div id="signupcol" class="column is-half">
                         <h1 class = 'title is-2'>Signup</h1>
                         <h1 class = 'subtitle is-5 is-italic'>for new users</h1>
-                        <input id = 'signupusername' type="text" placeholder="Username"/>
+                        <input id = 'signupemail' type="email" placeholder="Email"/>
                         <br/>
                         <input id = 'signuppassword' type="password" placeholder="Password"/>
                         <br/>
-                        <input id = 'signupemail' type="email" placeholder="Email Address"/>
+                        <input id = 'signupusername' type="text" placeholder="Username"/>
                         <br/>
                         <p id="signupmsg"></p>
                         <br/>
                         <p>Where are you from?</p>
                         <span id= "countryspan">
                             <select id="countryselect" onChange={changeCountryCode}>
-                                <option disabled="true">Select country/territory...</option>
                                 {
                                 Object.keys(countries)
                                 .filter(key => key.length == 2 && !['un', 'eu'].includes(key))
@@ -117,9 +116,9 @@ function Login() {
         }
         let e = id('countryselect');
         //non-empty
-        if(to.username && to.password && to.email && e.options[e.selectedIndex].text != 'Select country/territory...')
+        if(to.username && to.password && to.email)
         {
-            if(to.username.length <= 15)
+            if(to.username.length <= 15 && to.username.length >= 5)
             {
                 id('signupmsg').innerHTML = 'Account successfully created! Now login with your email/password.';
                 fireAuth
@@ -131,12 +130,18 @@ function Login() {
                         });
                         fireDb.ref("users/" + auth.user.uid).set({
                             username : to.username,
+                            email : to.email,
                             country : Object.keys(countries).find(key => countries[key] === e.options[e.selectedIndex].text),
+                            attempted : [],
                         });
                     }
                 })
                 .catch((err) => id('signupmsg').innerHTML = err.message);
                 console.log(fireAuth.currentUser);
+            }
+            else if(to.username.length < 5)
+            {
+                id('signupmsg').innerHTML = 'Username can\'t be shorter than 5 characters.'
             }
             else
             {

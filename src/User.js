@@ -19,12 +19,12 @@ function User()
         <div id='userstats'>
             <p>About {fireAuth.currentUser.displayName}</p>
             <p>Email: {fireAuth.currentUser.email}</p>
-            <p>Playlists attempted: </p>
+            <p>Playlists attempted: {userFacts.attempted.length}</p>
             <p>Date joined: {function() {
                 let j = new Date(fireAuth.currentUser.metadata.creationTime);
                 return j.toLocaleString(window.lang,{month:'short', day:'numeric', year:'numeric'});
             }()}</p>
-            <p>Country: <img alt = {userFacts.country} src={`https://flagcdn.com/h24/${userFacts.country}.png`}/></p>
+            <p>Country: <img alt = {'flag-' + userFacts.country} src={`https://flagcdn.com/h24/${userFacts.country}.png`}/></p>
         </div>
     )
 }
