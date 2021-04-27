@@ -59,6 +59,9 @@ function Login() {
                         <br/>
                         <p>Where are you from?</p>
                         <span id= "countryspan">
+                            <img id = 'flagimg' 
+                            alt = {`flag-${country}`} 
+                            src={`https://flagcdn.com/h24/${country}.png`}/>
                             <select id="countryselect" onChange={changeCountryCode}>
                                 {
                                 Object.keys(countries)
@@ -132,7 +135,6 @@ function Login() {
                             username : to.username,
                             email : to.email,
                             country : Object.keys(countries).find(key => countries[key] === e.options[e.selectedIndex].text),
-                            attempted : [],
                         });
                     }
                 })

@@ -19,7 +19,7 @@ function User()
         <div id='userstats'>
             <p>About {fireAuth.currentUser.displayName}</p>
             <p>Email: {fireAuth.currentUser.email}</p>
-            <p>Playlists attempted: {userFacts.attempted.length}</p>
+            <p>Playlists attempted: {userFacts.attempted ? userFacts.attempted.keys().length : 0}</p>
             <p>Date joined: {function() {
                 let j = new Date(fireAuth.currentUser.metadata.creationTime);
                 return j.toLocaleString(window.lang,{month:'short', day:'numeric', year:'numeric'});

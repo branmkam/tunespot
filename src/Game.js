@@ -113,24 +113,33 @@ async function buttonResults()
     }
     else
     {
-        //end game
-        id('gamebox').innerHTML = `Finished with score of ${window.score}`;
-
+        //endgame
         //check if existing score and if higher        
-        if(!highscore || highscore > window.score)
+        if(!highscore || window.score > highscore)
         {
+            //playlist high score rankings
             console.log('updating...')
             fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores`).update(
                 {
                     [`${fireAuth.currentUser.uid}`]: window.score,
-                    attempted: oldStats.attempted ? oldStats.attempted.push(window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]) : [...window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]],
                 }
             )
+            //TODO user profile - still NOT WORKING
+            fireDb.ref(`playlists/${fireAuth.currentUser.uid}/attempted`).set(
+                {
+                    [`${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}`]: window.score,
+                }
+            )             
         }
         else
         {
             //score lower than user's highscore
         }
+
+        //end game
+        id('gamebox').innerHTML = 
+        `<p>Finished with score of ${window.score}</p>
+        <p>Old score: ${highscore ? highscore : 'n/a'}</p>`;
     }
 }
 
