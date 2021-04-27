@@ -1,0 +1,281 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css";
+
+
+
+html
+{
+  background-color: #bbffbb;
+}
+
+body
+{
+  font-family: 'Trebuchet MS', 'Gill Sans', 'Gill Sans MT', sans-serif;
+}
+
+.content-tab {
+  display : none;
+}
+
+.tab:hover
+{
+  color: black;
+}
+
+#top {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+
+/*had to push down for scrolling - EDIT THIS FOR HOW FAR DOWN PAGE IS */
+#app-body {
+  padding-top: 180px;
+}
+
+
+/* LOGIN BOX */
+#loginbox
+{
+  margin-left: auto;
+  margin-right: auto;  
+  text-align: center;
+}
+
+#loginbox input
+{
+  width: 95%;
+  text-align: center;
+  margin: 10px;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.loginbuttons
+{
+  width: 100px;
+  padding: 10px;
+  font-size: 20px;
+  margin-top: 15px;
+  border: 3px black solid;
+  background-color: lightgreen;
+}
+
+.loginbuttons:hover
+{
+  color: blue;
+}
+
+#countryspan
+{
+    margin: auto;
+}
+
+#countryselect
+{
+  font-size: 16px;
+  width: 80%;
+}
+
+/* APP STUFF */
+
+.testpara
+{
+  text-align: center;
+}
+
+.spotifyresult
+{
+  margin-top: 10px;
+  margin-right: 10px;
+  width: 100%;
+  height: 350px;
+}
+
+.youtuberesult
+{
+  width: 560px;
+  height: 315px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+#searchAPIs
+{
+  text-align: center;
+}
+
+#searchAPIs input {
+  width: 90%;
+  font-size: 20px;
+  text-align: center;
+}
+
+#searchAPIs button {
+  width: 28%;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-left: 5px;
+  border: 0px;
+  padding: 5px;
+  background-color: black;
+  color: white;
+}
+
+.hero h1
+{
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.hero.is-small
+{
+  height: 150px;
+}
+
+.hero-body
+{
+  height: 100px;
+}
+
+.hero-foot
+{
+  height: 40px;
+}
+
+#playerDiv
+{
+    margin-top: 10px; 
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: '#ffffffff';
+    z-index: 50;
+}
+
+#startbutton
+{
+    background-color: lightgreen;
+    font-size: 36px;
+    padding: 10px;
+    border: 2px black solid;
+    width: 50%;
+}
+
+
+#searchbars {
+  margin-bottom: 40px;
+}
+
+#searchAPIs button.playlistbutton {
+  font-size: 18px;
+  width: 100%;
+  margin: 0px;
+}
+
+#searchAPIs button:hover
+{
+  color: lightgreen;
+  background-color: "#000033";
+}
+
+#game
+{
+  text-align: center;
+}
+#gamebox
+{
+  width: 90%;
+  margin: auto;
+}
+
+#displayResults > p
+{
+  text-align: center;
+}
+
+.choicebutton
+{
+  width: 90%;
+  padding: 10px;
+  color: white;
+  border: 0px;
+  background-color: black;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family:'Franklin Gothic Light', 'Arial Narrow', Arial, sans-serif;
+}
+
+.choicebutton:hover
+{
+  color: lightgreen;
+}
+
+#score
+{
+  margin: 10px;
+  font-size: 20px;
+}
+
+#msg
+{
+  font-size: 18px;
+}
+
+#msg.correct
+{
+  color: green;
+}
+
+#msg.incorrect
+{
+  color: red;
+}
+
+#gameplayer
+{
+  margin: auto;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  text-align: center;
+}
+
+#notWorking
+{
+  border: 0px;
+  margin-bottom: 20px;
+  padding: 5px;
+  background-color: white;
+}
+
+#notWorking:hover
+{
+  color: blue;
+  background-color: lightgreen;
+}
+
+#currentplayer
+{
+   width: 300px;
+   height: 380px;
+   border: 10px black;
+   position: relative;
+   left: -12px;
+   top: -10px;
+}
+
+.content
+{
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+#gamebox
+{
+    width: 80%;
+    height: 100%;
+}
+
+/* USER STATS */
+#userstats
+{
+  text-align:center;
+}
