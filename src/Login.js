@@ -11,15 +11,17 @@ import App from './App';
 function Login() {  
 
     const [countries, setCountries] = useState({});
+    const [country, setCountry] = useState('');
 
     useEffect(() => {
         async function fetchInfo() {
             const result = await axios({
                 method : 'get',
-                url : `https://flagcdn.com/${window.lang}/codes.json`, //languages supported are en, es, fr, de, it, cs, sk, pl
+                url : `https://flagcdn.com/en/codes.json`, //languages supported are en, es, fr, de, it, cs, sk, pl
             });
             setCountries(result.data);
-            console.log(result.data);
+            const result2 = await gl.getGeolocation();
+            setCountry(result2.country_code.toLowerCase());
         }
         fetchInfo();
     }, []);
@@ -38,7 +40,7 @@ function Login() {
                         <h1 class = 'subtitle is-5 is-italic'>for returning users</h1>
                         <input id = 'loginemail' type="email" placeholder="Email"/>
                         <br/>
-                        <input id = 'loginpassword' type="text" placeholder="Password"/>
+                        <input id = 'loginpassword' type="password" placeholder="Password"/>
                         <br/>
                         <p id = 'loginmsg'></p>
                         <br/>
@@ -49,7 +51,7 @@ function Login() {
                         <h1 class = 'subtitle is-5 is-italic'>for new users</h1>
                         <input id = 'signupusername' type="text" placeholder="Username"/>
                         <br/>
-                        <input id = 'signuppassword' type="text" placeholder="Password"/>
+                        <input id = 'signuppassword' type="password" placeholder="Password"/>
                         <br/>
                         <input id = 'signupemail' type="email" placeholder="Email Address"/>
                         <br/>
@@ -58,13 +60,16 @@ function Login() {
                         <p>Where are you from?</p>
                         <span id= "countryspan">
                             <select id="countryselect" onChange={changeCountryCode}>
-                                <option selected disabled="true">Select country/territory...</option>
+                                <option disabled="true">Select country/territory...</option>
                                 {
                                 Object.keys(countries)
                                 .filter(key => key.length == 2 && !['un', 'eu'].includes(key))
                                 .map(key => countries[key])
                                 .sort()
-                                .map(c => <option>{c}</option>)
+                                .map(c => <option selected={countries[country] == c}>{c}</option>)  
+                                }
+                                {
+                                    id('countryselect') != null ? id('countryselect').click() : ''
                                 }
                             </select>
                             <br/>
@@ -144,7 +149,7 @@ function Login() {
         } 
     }
 
-    async function changeCountryCode(){
+    function changeCountryCode(){
         let e = document.getElementById('countryselect');
         let code = Object.keys(countries).find(key => countries[key] === e.options[e.selectedIndex].text);
         if(document.getElementById('flagimg')){ document.getElementById('countryspan').removeChild(document.getElementById('flagimg')) }

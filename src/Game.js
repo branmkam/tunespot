@@ -41,7 +41,7 @@ export let initGame = async function()
     startbutton.addEventListener('click', pressStart.bind(this));
 
     //do all async firebase calls here
-    highscore = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/').pop().pop()}/highscores/${fireAuth.currentUser.uid}`).get().then(snapshot => snapshot.val()); 
+    highscore = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores/${fireAuth.currentUser.uid}`).get().then(snapshot => snapshot.val()); 
     console.log(!highscore);
     console.log(tracks.data.href);
 }
@@ -120,7 +120,7 @@ async function buttonResults()
         if(!highscore || highscore > window.score)
         {
             console.log('updating...')
-            fireDb.ref(`playlists/${window.cp.tracks.href.split('/').pop().pop()}/highscores`).update(
+            fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores`).update(
                 {
                     [`${fireAuth.currentUser.uid}`]: window.score,
                 }
