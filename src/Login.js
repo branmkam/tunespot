@@ -16,7 +16,7 @@ function Login() {
         async function fetchInfo() {
             const result = await axios({
                 method : 'get',
-                url : 'https://flagcdn.com/en/codes.json', //languages supported are en, es, fr, de, it, cs, sk, pl
+                url : `https://flagcdn.com/${window.lang}/codes.json`, //languages supported are en, es, fr, de, it, cs, sk, pl
             });
             setCountries(result.data);
             console.log(result.data);

@@ -2,6 +2,7 @@ import { newElement } from './globals';
 import axios from 'axios';
 import * as gl from './globals';
 import $ from 'jquery';
+import { fireAuth, fireDb } from './firebase';
 
 export default function Game()
 {
@@ -12,6 +13,7 @@ export default function Game()
     )
 }
 
+let highscore = '';
 export let initGame = async function()
 {
     window.clickTime = '';
@@ -37,6 +39,11 @@ export let initGame = async function()
     let subtitle = newElement(gamebox, 'h2', 'subtitle is-6', 'gamesubtitle',  `${cp.description}`);
     let startbutton = newElement(gamebox, 'button', 'startbutton', 'startbutton', 'Start!');
     startbutton.addEventListener('click', pressStart.bind(this));
+
+    //do all async firebase calls here
+    highscore = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/').pop().pop()}/highscores/${fireAuth.currentUser.uid}`).get().then(snapshot => snapshot.val()); 
+    console.log(!highscore);
+    console.log(tracks.data.href);
 }
 
 function pressStart()
@@ -59,7 +66,7 @@ function pressStart()
 
 
 //tracklist[0] always current track;
-function buttonResults()
+async function buttonResults()
 {
     window.clickTime = '';
     window.buttons = [];
@@ -108,6 +115,21 @@ function buttonResults()
     {
         //end game
         id('gamebox').innerHTML = `Finished with score of ${window.score}`;
+
+        //check if existing score and if higher        
+        if(!highscore || highscore > window.score)
+        {
+            console.log('updating...')
+            fireDb.ref(`playlists/${window.cp.tracks.href.split('/').pop().pop()}/highscores`).update(
+                {
+                    [`${fireAuth.currentUser.uid}`]: window.score,
+                }
+            )
+        }
+        else
+        {
+            //score lower than user's highscore
+        }
     }
 }
 

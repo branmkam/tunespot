@@ -5,9 +5,13 @@ import Game from './Game';
 import switchTabs from './switchTabs';
 import {fireDb, fireAuth} from './firebase';
 import User from './User.js';
+import SignOut from './SignOut';
 
 function App() {
   window.cp = {};
+  //change in future
+  window.lang = 'en';
+  window.signOut = false;
   return (
     <div>
       <section id = "top" class = "hero is-small is-success">
@@ -19,7 +23,8 @@ function App() {
               <ul>
                   <li id = 'searchTab' class = "tab is-active has-text-link" onClick={event => switchTabs(event, 'search')}><a>Playlist Search</a></li>
                   <li id = 'playTab' class = "tab" onClick={event => switchTabs(event, 'play')}><a>Play Game</a></li> 
-                  <li id = 'userTab' class = "tab" onClick={event => switchTabs(event, 'user')}><a>{fireAuth.currentUser.displayName}</a></li> 
+                  <li id = 'userTab' class = "tab" onClick={event => switchTabs(event, 'user')}><a>About {fireAuth.currentUser.displayName}</a></li>
+                  <li id = 'signOutTab' class = "tab" onClick={event => {switchTabs(event, 'signOut'); window.signOut = true;}}><a>Sign Out</a></li>
               </ul>
             </nav>
         </div>
@@ -34,6 +39,9 @@ function App() {
         </div>
         <div id="user" class="content-tab">
           <User />
+        </div>
+        <div id="signOut" class="content-tab">
+          <SignOut />
         </div>
       </section>
     </div>

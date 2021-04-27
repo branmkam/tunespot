@@ -274,6 +274,11 @@ body
     height: 100%;
 }
 
+#signoutdiv
+{
+  text-align: center;
+}
+
 /* USER STATS */
 #userstats
 {
