@@ -6,6 +6,7 @@ import switchTabs from './switchTabs';
 import {fireDb, fireAuth} from './firebase';
 import User from './User.js';
 import SignOut from './SignOut';
+import About from './About';
 
 function App() {
   window.cp = {};
@@ -24,6 +25,7 @@ function App() {
                   <li id = 'searchTab' class = "tab is-active has-text-link" onClick={event => switchTabs(event, 'search')}><a>Playlist Search</a></li>
                   <li id = 'playTab' class = "tab" onClick={event => switchTabs(event, 'play')}><a>Play Game</a></li> 
                   <li id = 'userTab' class = "tab" onClick={event => switchTabs(event, 'user')}><a>About {fireAuth.currentUser.displayName}</a></li>
+                  <li id = 'aboutTab' class = "tab" onClick={event => switchTabs(event, 'about')}><a>About TuneSpot</a></li> 
                   <li id = 'signOutTab' class = "tab" onClick={event => {switchTabs(event, 'signOut'); window.signOut = true;}}><a>Sign Out</a></li>
               </ul>
             </nav>
@@ -42,6 +44,9 @@ function App() {
         </div>
         <div id="signOut" class="content-tab">
           <SignOut />
+        </div>
+        <div id="about" class="content-tab">
+          <About />
         </div>
       </section>
     </div>

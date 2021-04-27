@@ -57,7 +57,7 @@ function Login() {
                         <br/>
                         <p id="signupmsg"></p>
                         <br/>
-                        <p>Where are you from?</p>
+                        <p>Where are you from? (Be honest!)</p>
                         <span id= "countryspan">
                             <img id = 'flagimg' 
                             alt = {`flag-${country}`} 

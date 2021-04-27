@@ -279,8 +279,29 @@ body
   text-align: center;
 }
 
+
+#aboutdiv
+{
+  font-size: 20px;
+  width: 90%;
+  margin: auto;
+}
+
+#aboutdiv p
+{
+  margin: 10px;
+  color: black;
+}
+
+#aboutdiv h1
+{
+  color: #aa3333;
+  text-align: center;
+}
+
 /* USER STATS */
 #userstats
 {
   text-align:center;
 }
+
