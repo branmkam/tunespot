@@ -10,6 +10,7 @@ import App from './App';
 
 function Login() {  
 
+    window.hasGame = false;
     const [countries, setCountries] = useState({});
     const [country, setCountry] = useState('');
 
@@ -63,16 +64,16 @@ function Login() {
                             alt = {`flag-${country}`} 
                             src={`https://flagcdn.com/h24/${country}.png`}/>
                             <select id="countryselect" onChange={changeCountryCode}>
-                                {
+                            {
                                 Object.keys(countries)
                                 .filter(key => key.length == 2 && !['un', 'eu'].includes(key))
                                 .map(key => countries[key])
                                 .sort()
                                 .map(c => <option selected={countries[country] == c}>{c}</option>)  
-                                }
-                                {
-                                    id('countryselect') != null ? id('countryselect').click() : ''
-                                }
+                            }
+                            {
+                                id('countryselect') != null ? id('countryselect').click() : ''
+                            }
                             </select>
                             <br/>
                         </span>
@@ -101,6 +102,7 @@ function Login() {
                         </React.StrictMode>,
                         id('root')
                       );
+                      document.getElementById('searchTab').click();
                 }
             }).catch(err => id('loginmsg') != null ? id('loginmsg').innerHTML = err.message : '');
         }

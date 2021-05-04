@@ -7,6 +7,8 @@ import {fireDb, fireAuth} from './firebase';
 import User from './User.js';
 import SignOut from './SignOut';
 import About from './About';
+import World from './World';
+import Playlists from './Playlists';
 
 function App() {
   window.cp = {};
@@ -24,8 +26,10 @@ function App() {
               <ul>
                   <li id = 'searchTab' class = "tab is-active has-text-link" onClick={event => switchTabs(event, 'search')}><a>Playlist Search</a></li>
                   <li id = 'playTab' class = "tab" onClick={event => switchTabs(event, 'play')}><a>Play Game</a></li> 
+                  {/* <li id = 'playlistsTab' class = "tab" onClick={event => switchTabs(event, 'playlists')}><a>Playlists Played</a></li>  */}
                   <li id = 'userTab' class = "tab" onClick={event => switchTabs(event, 'user')}><a>About {fireAuth.currentUser.displayName}</a></li>
                   <li id = 'aboutTab' class = "tab" onClick={event => switchTabs(event, 'about')}><a>About TuneSpot</a></li> 
+                  <li id = 'worldTab' class = "tab" onClick={event => switchTabs(event, 'world')}><a>Where in the world?</a></li> 
                   <li id = 'signOutTab' class = "tab" onClick={event => {switchTabs(event, 'signOut'); window.signOut = true;}}><a>Sign Out</a></li>
               </ul>
             </nav>
@@ -48,6 +52,12 @@ function App() {
         <div id="about" class="content-tab">
           <About />
         </div>
+        <div id="world" class="content-tab">
+          <World />
+        </div>
+        {/* <div id="playlists" class="content-tab">
+          <Playlists />
+        </div> */}
       </section>
     </div>
   );

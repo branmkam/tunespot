@@ -7,7 +7,7 @@ function SignOut()
        
     return(
         <div id="signoutdiv">
-            <p>Are you sure?</p>
+            <p class="title is-2">Are you sure?</p>
             <button onClick = {returnToLogin}>Return to Login</button>
         </div>
     )

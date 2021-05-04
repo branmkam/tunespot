@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as gl from './globals';
 import $ from 'jquery';
 import { fireAuth, fireDb } from './firebase';
+import React, {useState, useEffect} from 'react';
 
 export default function Game()
 {
@@ -13,10 +14,14 @@ export default function Game()
     )
 }
 
-let highscore, oldStats = '';
+
+
+
+let highscore, oldStats, oldHighscores = '';
 
 export let initGame = async function()
 {
+    window.hasGame = false;
     window.clickTime = '';
     window.numButtons = 6;
     window.score = 0;
@@ -39,21 +44,70 @@ export let initGame = async function()
     let trackNum = newElement(gamebox, 'h2', 'subtitle is-5', 'gametracknum', `${window.tracklist.length} tracks | by ${cp.owner.display_name}`);
     let subtitle = newElement(gamebox, 'h2', 'subtitle is-6', 'gamesubtitle',  `${cp.description}`);
     let startbutton = newElement(gamebox, 'button', 'startbutton', 'startbutton', 'Start!');
+    let viewHSbutton = newElement(gamebox, 'button', 'hsbutton', 'hsbutton', 'View High Scores');
     startbutton.addEventListener('click', pressStart.bind(this));
+    viewHSbutton.addEventListener('click', viewHS.bind(this));
+
 
     //do all async firebase calls here
     highscore = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores/${fireAuth.currentUser.uid}`).get().then(snapshot => snapshot.val()); 
     oldStats = await fireDb.ref(`users/${fireAuth.currentUser.uid}`).get().then(snapshot => snapshot.val());
+    
+}
+
+async function viewHS()
+{
+    let gamebox = id('gamebox');
+    let rank = -1;
+    let oldHighscores = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores/`).get().then(snapshot => snapshot.val()); 
+    if(oldHighscores)
+    {
+        oldHighscores = Object.entries(oldHighscores);
+        oldHighscores = oldHighscores.sort((a, b) => b[1] - a[1]);
+        rank = oldHighscores.findIndex(ind => ind[0] == fireAuth.currentUser.uid) + 1;
+    }
+    let users = await fireDb.ref(`users/`).get().then(snapshot => snapshot.val()); 
+    gamebox.removeChild(id('startbutton'));
+    gamebox.removeChild(id('hsbutton'));
+    newElement(gamebox, 'p', 'hsp', 'hsp');
+    id('hsp').innerHTML = rank > 0 ? `<p>You rank #${rank} out of ${oldHighscores.length}.</p><br/>`: '';
+    id('hsp').innerHTML += 
+    `<h1 class="title is-4">Current High Scores</h1>` +
+    (oldHighscores ? 
+    oldHighscores.slice(0, 5)
+    .map(s => `<p>${(fireAuth.currentUser.uid == s[0] ? 'YOU' : (`${users[s[0]].username} #${s[0].substring(s[0].length-4)}`))}: ${s[1]}</p>`).join('') 
+    + `<br/><p>${oldHighscores.length} users have played this playlist.</p>` 
+    : 'No high scores yet!');
+
+    let back = newElement(gamebox, 'button', 'hsback', 'hsback', 'Back');
+    back.addEventListener('click', hsback.bind(this));
+
+}
+
+function hsback()
+{
+    let gamebox = id('gamebox');
+    gamebox.removeChild(id('hsp'));
+    gamebox.removeChild(id('hsback'));
+    let startbutton = newElement(gamebox, 'button', 'startbutton', 'startbutton', 'Start!');
+    let viewHSbutton = newElement(gamebox, 'button', 'hsbutton', 'hsbutton', 'View High Scores');
+    startbutton.addEventListener('click', pressStart.bind(this));
+    viewHSbutton.addEventListener('click', viewHS.bind(this));
+
 }
 
 function pressStart()
 {
+    window.hasGame = true;
     let tracklist = window.tracklist;
     let game = id('game');
     let gamebox = id('gamebox');
     gamebox.removeChild(id('startbutton'));
-    let score = newElement(gamebox, 'p', null, 'score', `Score: ${window.score} | ${tracklist.length} tracks left`);
-    let msg = newElement(gamebox, 'p', null, 'msg', ' <br/> ');
+    gamebox.removeChild(id('hsbutton'));
+    let timeContainer = newElement(gamebox, 'div', null, 'timecontainer');
+    let score = newElement(timeContainer, 'span', null, 'score', `Score: ${window.score} | ${tracklist.length} tracks left`);
+    let time = newElement(timeContainer, 'span', 'timearea', 'timearea', '1000');
+    let msg = newElement(gamebox, 'p', null, 'msg');
     let playerDiv = newElement(gamebox, 'div', null, 'playerDiv');
     let player = newElement(playerDiv, 'div', null, 'gameplayer');
     playerDiv.addEventListener('click', clickTime);
@@ -68,7 +122,12 @@ function pressStart()
 //tracklist[0] always current track;
 async function buttonResults()
 {
-    window.clickTime = '';
+    if(window.tracklist.length > 0)
+    {
+        id('timearea').innerHTML = '1000';
+    }
+    window.roundScore = 1000;
+    window.clickTime = 0;
     window.buttons = [];
     //create buttons
     id('gamechoices').innerHTML = '';
@@ -88,9 +147,33 @@ async function buttonResults()
         //         alert("Click detected inside iframe.");
         //     });
         // });
+        // id('gameplayer').focus();
+        // let listener = window.addEventListener('blur', function() {
+        //     if (document.activeElement === document.getElementById('gameplayer')) {
+        //         console.log('iframe active');
+        //         clickTime();
+        //     }
+        //     window.removeEventListener('blur', listener);
+        // });
+        if(window.hasGame)
+        {
+            let monitor = setInterval(function(){
+                let elem = document.activeElement;
+                if(elem && elem.id == 'currentplayer'){
+                    window.clickTimer = setTimeout(clickTime, 2000);
+                    clearInterval(monitor);
+                }
+            }, 100);
+        }
+        
 
         //gets other tracks w/o correct
-        let buttonTracks = [correctTrack, ...fullTracklist.filter(f => f != correctTrack).sort(() => Math.random() - 0.5).slice(0, window.fullTracklist.length < window.numButtons ? window.fullTracklist.length - 1: window.numButtons - 1)];
+        let buttonTracks = [correctTrack, 
+            ...fullTracklist
+            .filter(f => f != correctTrack)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, window.fullTracklist.length < window.numButtons ? window.fullTracklist.length - 1: window.numButtons - 1)
+        ];
         
         //shuffles for button order
         buttonTracks = buttonTracks.sort(() => Math.random() - 0.5);
@@ -118,14 +201,19 @@ async function buttonResults()
         if(!highscore || window.score > highscore)
         {
             //playlist high score rankings
-            console.log('updating...')
             fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores`).update(
                 {
                     [`${fireAuth.currentUser.uid}`]: window.score,
                 }
             )
+            //playlist high score time achieved
+            fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/timestamps`).update(
+                {
+                    [`${fireAuth.currentUser.uid}`]: new Date(),
+                }
+            )
             //TODO user profile - still NOT WORKING
-            fireDb.ref(`playlists/${fireAuth.currentUser.uid}/attempted`).set(
+            fireDb.ref(`users/${fireAuth.currentUser.uid}/scores`).update(
                 {
                     [`${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}`]: window.score,
                 }
@@ -137,19 +225,48 @@ async function buttonResults()
         }
 
         //end game
-        id('gamebox').innerHTML = 
+        let gamebox = id('gamebox');
+        gamebox.innerHTML = 
         `<p>Finished with score of ${window.score}</p>
-        <p>Old score: ${highscore ? highscore : 'n/a'}</p>`;
+        <p>Your previous high score: ${highscore ? highscore : 'n/a'}</p><br/><h1 class = "title is-4">Current Highscores</h1>`;
+
+        let rank = -1;
+        let oldHighscores = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores/`).get().then(snapshot => snapshot.val()); 
+        if(oldHighscores)
+        {
+            oldHighscores = Object.entries(oldHighscores);
+            oldHighscores = oldHighscores.sort((a, b) => b[1] - a[1]);
+            rank = oldHighscores.findIndex(ind => ind[0] == fireAuth.currentUser.uid) + 1;
+        }
+        let users = await fireDb.ref(`users/`).get().then(snapshot => snapshot.val()); 
+        newElement(gamebox, 'p', 'hsp', 'hsp');
+        id('hsp').innerHTML = rank >= 0 ? `<p>You rank #${rank} out of ${oldHighscores.length}.</p><br/>`: '';
+        id('hsp').innerHTML += 
+        (oldHighscores ? 
+        oldHighscores.slice(0, 5)
+        .map(s => `<p>${(fireAuth.currentUser.uid == s[0] ? 'YOU' : (`${users[s[0]].username} #${s[0].substring(s[0].length-4)}`))}: ${s[1]}</p>`).join('') 
+        + `<br/><p>${oldHighscores.length} users have played this playlist.</p>` 
+        : 'No high scores yet!');
+        let boton = newElement(gamebox, 'button', 'tryagain', 'tryagain', 'Try Again!');
+        boton.addEventListener('click', () => {
+            id('game').removeChild(gamebox);
+            initGame();
+        });
     }
 }
 
 function correctPress(t)
 {
+    if(window.hasGame && window.tracklist.length <= 0)
+    {
+        window.hasGame = false;
+    }
+    clearTimeout(window.clickTimer);
     let tracklist = window.tracklist;
     let oldScore = window.score;
-    window.score += 100;
+    window.score += window.roundScore;
     id('score').innerHTML = `Score: ${window.score} | ${tracklist.length} tracks left`;
-    id('msg').innerHTML = `Nice work! It was ${t.track.name} by ${t.track.artists[0].name}</br>+${window.score - oldScore}`;
+    id('msg').innerHTML = `Nice work! It was ${t.track.name} by ${t.track.artists[0].name}</br>+${window.roundScore}`;
     id('msg').className = 'correct';
     //console.log('called correct');
     //b.removeEventListener('click', correctPress.bind(this, b, t), {once : true}); 
@@ -158,6 +275,11 @@ function correctPress(t)
 
 function incorrectPress(t)
 {
+    if(window.hasGame && window.tracklist.length <= 0)
+    {
+        window.hasGame = false;
+    }
+    clearTimeout(window.clickTimer);
     let tracklist = window.tracklist;
     let oldScore = window.score;
     id('score').innerHTML = `Score: ${window.score} | ${tracklist.length} tracks left`;
@@ -169,19 +291,51 @@ function incorrectPress(t)
 }
 
 function skipSong()
-{
+{    
+    if(window.hasGame && window.tracklist.length <= 0)
+    {
+        window.hasGame = false;
+    }
+    clearTimeout(window.clickTimer);
     id('score').innerHTML = `Score: ${window.score} | ${window.tracklist.length} tracks left`;
     buttonResults();
 }
 
 //when player clicked - start time
-function clickTime(e)
+function clickTime()
 {
-    if(!window.clickTime)
+    if(window.clickTime == 0)
     {
-        window.clickTime = e.timeStamp;
+        window.clickTime = new Date();
     }
-    console.log(new Date(window.clickTime));
+    let timeTracker = function(){
+        if(window.hasGame) 
+        {
+            let timeTaken = window.clickTime == 0 ? 0 : new Date() - window.clickTime;
+            window.roundScore = Math.floor(1000*(0.5**(timeTaken/8000))); //half points every 8 seconds after 2 second delay
+            id('timearea').innerHTML = window.roundScore;
+            id('timearea').style.color = rgbify(window.roundScore);
+        }
+    };
+    setInterval(timeTracker, 50); //updates 20 times a second
+}
+
+function rgbify(n)
+{
+    let r, g = 255; 
+    if(n > 500)
+    {
+        r = Math.floor(255 - ((n-500)/2));
+        g = 255;
+    }
+    else
+    {
+        g = Math.floor(255 + ((n-500)/2));
+        r = 255;
+    }
+    let fin = '#' + (r > 16 ? r.toString(16) : '0' + r.toString(16)) + (g > 16 ? g.toString(16) : '0' + g.toString(16)) + "00";
+    console.log(fin);
+    return fin;
 }
 
 export function id(string) {

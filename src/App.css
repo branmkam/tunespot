@@ -16,6 +16,22 @@ body
   display : none;
 }
 
+button
+{
+  margin: 5px;
+  border: 2px solid black;
+  background-color: lightgreen;
+  color: black;
+  font-family: 'Trebuchet MS', 'Gill Sans', 'Gill Sans MT', sans-serif;
+  padding: 10px;
+  font-size: 18px;
+}
+
+button:hover
+{
+  color: blue;
+}
+
 .tab:hover
 {
   color: black;
@@ -74,6 +90,38 @@ body
 {
   font-size: 16px;
   width: 80%;
+}
+
+#worldstats
+{
+  text-align:center;
+}
+
+#worldstats table
+{
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  border: 4px solid black;
+}
+
+#worldstats td
+{
+  padding: 10px;
+  border-top: 2px solid black; 
+  border-bottom: 2px solid black; 
+  color: black;
+  margin: auto;
+}
+
+#worldstats table img
+{
+  height: 24px;
+}
+
+#userstats p
+{
+  margin: 5px;
 }
 
 /* APP STUFF */
@@ -153,12 +201,44 @@ body
 #startbutton
 {
     background-color: lightgreen;
-    font-size: 36px;
+    font-size: 28px;
     padding: 10px;
     border: 2px black solid;
     width: 50%;
 }
 
+#hsbutton
+{
+    background-color: lightblue;
+    font-size: 28px;
+    padding: 10px;
+    border: 2px black solid;
+    width: 50%;
+}
+
+#hsback
+{
+    background-color: lightblue;
+    font-size: 18px;
+    padding: 5px;
+    margin: 5px;
+    border: 2px black solid;
+    width: 20%;
+}
+
+#timearea
+{
+  font-size: 28px;
+  color: rgba(0, 255, 0);
+  background-color: black;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#timecontainer
+{
+  margin: 15px;
+}
 
 #searchbars {
   margin-bottom: 40px;
@@ -244,6 +324,7 @@ body
   margin-bottom: 20px;
   padding: 5px;
   background-color: white;
+  font-size: 14px;
 }
 
 #notWorking:hover
@@ -305,3 +386,13 @@ body
   text-align:center;
 }
 
+#playlistsplayed
+{
+  text-align: center;
+}
+
+#playlistsplayed table
+{
+  margin: auto;
+  width: 50%;
+}
