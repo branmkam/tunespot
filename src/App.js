@@ -9,6 +9,7 @@ import SignOut from './SignOut';
 import About from './About';
 import World from './World';
 import Playlists from './Playlists';
+import Footer from './Footer';
 
 function App() {
   window.cp = {};
@@ -34,6 +35,9 @@ function App() {
               </ul>
             </nav>
         </div>
+      </section>
+      <section>
+        <Footer/>
       </section>
 
       <section id="app-body" class = "section">

@@ -10,6 +10,7 @@ html
 body
 {
   font-family: 'Trebuchet MS', 'Gill Sans', 'Gill Sans MT', sans-serif;
+  overflow: hidden;
 }
 
 .content-tab {
@@ -409,4 +410,22 @@ button:hover
   text-align: center;
   margin: auto;
   vertical-align: middle;
+}
+
+
+div#footerdiv
+{
+  bottom: 0px;
+  width: 100%;
+  position: fixed;
+  padding-left: auto;
+}
+
+span#footerpara
+{
+  color: white;
+  background-color:#003300;
+  padding: 10px;
+  float: right;
+  font-size: 12px;
 }

@@ -55,7 +55,7 @@ function World()
 
     return(
         <div id = "worldstats" class="has-text-centered">
-            <h1 class="title is-4">TuneSpot has {countries.length} users from {tallyArray.length} countries!</h1>
+            <h1 class="title is-4">TuneSpot has {countries.length} user{countries.length == 1 ? '' : 's'} from {tallyArray.length} countr{tallyArray.length == 1 ? 'y' : 'ies'}!</h1>
             {table}
             <p>Last Updated: {function() {
                         let j = new Date(lastUpdated);

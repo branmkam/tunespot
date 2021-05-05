@@ -3,13 +3,18 @@ function About()
     return(
         <div id='aboutdiv'>
             <h1 class='title is-4'>Hey there! My name's Brandon, and thanks for playing my game!</h1>
-            <h1 class = 'title is-5'>How to play</h1>
+            <h1 class = 'title is-5'>How To Play</h1>
             <p>Search for a playlist with a query, the playlist URL/ID or find a user's playlists by user URL/ID.</p>
             <p>Once selected, you can begin playing by pressing the start button.</p>
             <p>You can get a maximum of 1000 points per song. The points start dropping down two seconds after you <b>first press play</b>, 
                 leaving you two seconds to get a perfect score on each song.</p>
             <p>After that, the points drop exponentially, at a rate of half every 8 seconds. (So, 500 will be left after 10 seconds, 250 after 18, 125 after 26, etc.)</p>
             <p>Once you've played through all of the songs, you can see your rank against other users!</p>
+            <br/>
+            <h1 class = 'title is-5'>Coming Soon in Version 1.1</h1>
+            <p>Your most recently played playlists will be visible in a separate tab. Right now, the only way to access a playlist is to search or use its ID/URL.</p>
+            <p>Potential bug fixes when pressing the play button due to large amount of requests.</p>
+            <p></p>
             <br/>
             <h1 class = 'title is-5'>About the Dev and Game</h1>
             <p>I'm currently a sophomore at UNC-Chapel Hill studying CS and Linguistics. Check out my 

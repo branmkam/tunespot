@@ -1,5 +1,6 @@
 import './App.css';
 import Header from './Header.js';
+import Footer from './Footer.js';
 import Game, { id } from './Game';
 import * as gl from './globals';
 import axios from 'axios';
@@ -84,6 +85,9 @@ function Login() {
                     </div>
                 </div>
             </section>
+            <section>
+                <Footer />
+            </section>
         </div>
     );
 
@@ -96,7 +100,7 @@ function Login() {
                 id('loginpassword').value,
             )
             .then((auth) => {
-                if (auth) { //&& fireAuth.currentUser.emailVerified) {
+                if (auth && fireAuth.currentUser.emailVerified) {
                     id('loginmsg').innerHTML = "Success!";
                     //navigate to app homescreen
                     ReactDOM.render(

@@ -103,7 +103,7 @@ function User()
 
     function reset() 
     {
-        if(!deleted)
+        if(!deleted && fireAuth.currentUser != null)
         {
             id('deleteaccount').innerHTML = 'Delete Account';
             clearTimeout(window.timeout);
@@ -111,7 +111,7 @@ function User()
         }
     }
     async function renderAgain() {
-        if(!deleted)
+        if(!deleted && fireAuth.currentUser != null)
         {
             const result = await fireDb.ref(`users/${fireAuth.currentUser.uid}`).get().then(snapshot => snapshot.val());
             setUserFacts(result);
