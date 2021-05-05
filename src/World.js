@@ -6,7 +6,6 @@ import axios from 'axios';
 function World()
 {
     const [users, setUsers] = useState('');
-    const [countryCodes, setCountryCodes] = useState('');
     const [lastUpdated, setLastUpdated] = useState(new Date());
 
 
@@ -14,11 +13,6 @@ function World()
         async function fetchInfo() {
             const result = await fireDb.ref(`users`).get().then(snapshot => snapshot.val());
             setUsers(result);
-            const result2 = await axios({
-                method : 'get',
-                url : `https://flagcdn.com/en/codes.json`, //languages supported are en, es, fr, de, it, cs, sk, pl
-            });
-            setCountryCodes(result2.data)
             setLastUpdated(new Date());
         }
         fetchInfo();
@@ -45,7 +39,7 @@ function World()
             <tbody>
             {
                 tallyArray.map(t => 
-                  <tr><td><img src={`https://flagcdn.com/h120/${t[0]}.png`}/></td><td>{countryCodes[Object.keys(countryCodes).find(key => key == t[0])]}</td><td>{t[1]}</td></tr>  
+                  <tr class={t[0] == users[fireAuth.currentUser.uid].country ? 'mine' : ''}><td><img src={`https://flagcdn.com/h120/${t[0]}.png`}/></td><td>{window.codes[Object.keys(window.codes).find(key => key == t[0])]}</td><td>{t[1]}</td></tr>  
                 )
             }
             </tbody>
@@ -54,15 +48,10 @@ function World()
     async function renderAgain() {
         const result = await fireDb.ref(`users`).get().then(snapshot => snapshot.val());
         setUsers(result);
-        const result2 = await axios({
-            method : 'get',
-            url : `https://flagcdn.com/en/codes.json`, //languages supported are en, es, fr, de, it, cs, sk, pl
-        });
-        setCountryCodes(result2.data);
         setLastUpdated(new Date());
     }
 
-    setTimeout(renderAgain, 30000); //twice a minute
+    setTimeout(renderAgain, 60000); //1 minute
 
     return(
         <div id = "worldstats" class="has-text-centered">

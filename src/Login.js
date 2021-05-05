@@ -22,6 +22,7 @@ function Login() {
             });
             setCountries(result.data);
             const result2 = await gl.getGeolocation();
+            window.codes = result.data;
             setCountry(result2.country_code.toLowerCase());
         }
         fetchInfo();
@@ -46,6 +47,8 @@ function Login() {
                         <p id = 'loginmsg'></p>
                         <br/>
                         <button id="loginbutton" class="loginbuttons" onClick={checkValidLogin}>Log In</button>
+                        <br/>
+                        <button class="notWorking" onClick={forgotPassword}>Forgot password?</button>
                     </div>
                     <div id="signupcol" class="column is-half">
                         <h1 class = 'title is-2'>Signup</h1>
@@ -66,7 +69,7 @@ function Login() {
                             <select id="countryselect" onChange={changeCountryCode}>
                             {
                                 Object.keys(countries)
-                                .filter(key => key.length == 2 && !['un', 'eu'].includes(key))
+                                .filter(key => key.length == 2 && !['un', 'eu', 'aq'].includes(key))
                                 .map(key => countries[key])
                                 .sort()
                                 .map(c => <option selected={countries[country] == c}>{c}</option>)  
@@ -86,15 +89,15 @@ function Login() {
 
     async function checkValidLogin() {
         if(id('loginemail').value && id('loginpassword').value)
-        {
-            id('loginmsg').innerHTML = ("Success!");      
+        {      
             fireAuth
             .signInWithEmailAndPassword(
                 id('loginemail').value,
                 id('loginpassword').value,
             )
             .then((auth) => {
-                if (auth) {
+                if (auth) { //&& fireAuth.currentUser.emailVerified) {
+                    id('loginmsg').innerHTML = "Success!";
                     //navigate to app homescreen
                     ReactDOM.render(
                         <React.StrictMode>
@@ -103,6 +106,10 @@ function Login() {
                         id('root')
                       );
                       document.getElementById('searchTab').click();
+                }
+                else
+                {
+                    id('loginmsg').innerHTML = "Your email isn't verified! Verify it and try again.";
                 }
             }).catch(err => id('loginmsg') != null ? id('loginmsg').innerHTML = err.message : '');
         }
@@ -125,8 +132,9 @@ function Login() {
         {
             if(to.username.length <= 15 && to.username.length >= 5)
             {
-                id('signupmsg').innerHTML = 'Account successfully created! Now login with your email/password.';
+                id('signupmsg').innerHTML = 'Account successfully created! Now verify your email, then login with your email/password.';
                 fireAuth
+                //create account
                 .createUserWithEmailAndPassword(to.email, to.password)
                 .then((auth) => {
                     if (auth) {
@@ -138,6 +146,9 @@ function Login() {
                             email : to.email,
                             country : Object.keys(countries).find(key => countries[key] === e.options[e.selectedIndex].text),
                         });
+                        //send verification email
+                        fireAuth.useDeviceLanguage();
+                        fireAuth.currentUser.sendEmailVerification().catch((err) => console.log(err)); //optional .then() in between if needed
                     }
                 })
                 .catch((err) => id('signupmsg').innerHTML = err.message);
@@ -164,6 +175,13 @@ function Login() {
         if(document.getElementById('flagimg')){ document.getElementById('countryspan').removeChild(document.getElementById('flagimg')) }
         let imgNew = gl.newElementBefore(document.getElementById('countryspan'), document.getElementById('countryselect'), 'img', null, 'flagimg');
         imgNew.src = `https://flagcdn.com/h24/${code}.png`;
+    }
+
+    function forgotPassword()
+    {
+        fireAuth.sendPasswordResetEmail(fireAuth.currentUser.email).then(function() {
+            id('loginmsg').innerHTML = 'Password reset email sent.';
+        }).catch(err => console.log(err));
     }
 }
 

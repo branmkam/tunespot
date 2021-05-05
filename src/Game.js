@@ -62,6 +62,7 @@ async function viewHS()
     let oldHighscores = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores/`).get().then(snapshot => snapshot.val()); 
     if(oldHighscores)
     {
+        console.log(oldHighscores);
         oldHighscores = Object.entries(oldHighscores);
         oldHighscores = oldHighscores.sort((a, b) => b[1] - a[1]);
         rank = oldHighscores.findIndex(ind => ind[0] == fireAuth.currentUser.uid) + 1;
@@ -317,7 +318,7 @@ function clickTime()
             id('timearea').style.color = rgbify(window.roundScore);
         }
     };
-    setInterval(timeTracker, 50); //updates 20 times a second
+    setInterval(timeTracker, 100); //updates 10 times a second
 }
 
 function rgbify(n)
@@ -334,7 +335,6 @@ function rgbify(n)
         r = 255;
     }
     let fin = '#' + (r > 16 ? r.toString(16) : '0' + r.toString(16)) + (g > 16 ? g.toString(16) : '0' + g.toString(16)) + "00";
-    console.log(fin);
     return fin;
 }
 

@@ -13,7 +13,7 @@ function SignOut()
     )
 }
 
-function returnToLogin()
+export function returnToLogin()
 {
     ReactDOM.render(
         <React.StrictMode>

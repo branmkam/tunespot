@@ -103,6 +103,8 @@ button:hover
   margin-right: auto;
   margin-bottom: 15px;
   border: 4px solid black;
+  background-color: lightblue;
+  color: black;
 }
 
 #worldstats td
@@ -110,9 +112,14 @@ button:hover
   padding: 10px;
   border-top: 2px solid black; 
   border-bottom: 2px solid black; 
-  color: black;
   margin: auto;
 }
+
+#worldstats tr.mine
+{
+  color: #bb0000;
+}
+
 
 #worldstats table img
 {
@@ -318,16 +325,16 @@ button:hover
   text-align: center;
 }
 
-#notWorking
+.notWorking
 {
   border: 0px;
   margin-bottom: 20px;
   padding: 5px;
-  background-color: white;
+  background-color: transparent;
   font-size: 14px;
 }
 
-#notWorking:hover
+.notWorking:hover
 {
   color: blue;
   background-color: lightgreen;
@@ -395,4 +402,11 @@ button:hover
 {
   margin: auto;
   width: 50%;
+}
+
+#deletemsg
+{
+  text-align: center;
+  margin: auto;
+  vertical-align: middle;
 }
