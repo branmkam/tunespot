@@ -32,9 +32,9 @@ button:hover
   color: blue;
 }
 
-.tab:hover
+#root nav li.tab:hover
 {
-  color: black;
+  color: #000000;
 }
 
 #top {
