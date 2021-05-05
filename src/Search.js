@@ -18,7 +18,6 @@ export default function Search()
             },
             data: 'grant_type=client_credentials',
         });
-        console.log('new token');
         window.sp_token = result.data.access_token;
     }
 
@@ -102,7 +101,6 @@ export default function Search()
                         limit: 24,
                     }
                 });
-                console.log(result.data.items.length);
                 result.data.items.length <= 0 ? id('displayResults').innerHTML = `<p>This user has no playlists.</p>` : displayPlaylists(result.data.items);
             } catch (e) {
                 id('displayResults').innerHTML = `<p>Not a valid user URL or ID! Make sure your URL/ID is correct!</p>`;

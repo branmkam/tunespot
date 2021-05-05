@@ -62,7 +62,6 @@ async function viewHS()
     let oldHighscores = await fireDb.ref(`playlists/${window.cp.tracks.href.split('/')[window.cp.tracks.href.split('/').length-2]}/highscores/`).get().then(snapshot => snapshot.val()); 
     if(oldHighscores)
     {
-        console.log(oldHighscores);
         oldHighscores = Object.entries(oldHighscores);
         oldHighscores = oldHighscores.sort((a, b) => b[1] - a[1]);
         rank = oldHighscores.findIndex(ind => ind[0] == fireAuth.currentUser.uid) + 1;
