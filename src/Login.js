@@ -54,6 +54,7 @@ function Login() {
                     <div id="signupcol" class="column is-half">
                         <h1 class = 'title is-2'>Signup</h1>
                         <h1 class = 'subtitle is-5 is-italic'>for new users</h1>
+                        <p><b>Notice:</b> Don't use a fake email. Firebase will ask you to verify any email you enter.</p>
                         <input id = 'signupemail' type="email" placeholder="Email"/>
                         <br/>
                         <input id = 'signuppassword' type="password" placeholder="Password"/>
@@ -62,7 +63,7 @@ function Login() {
                         <br/>
                         <p id="signupmsg"></p>
                         <br/>
-                        <p>Where are you from? (Be honest!)</p>
+                        <p>Where are you from?</p>
                         <span id= "countryspan">
                             <img id = 'flagimg' 
                             alt = {`flag-${country}`} 
