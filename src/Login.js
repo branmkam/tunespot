@@ -102,6 +102,9 @@ function Login() {
             )
             .then((auth) => {
                 if (auth && fireAuth.currentUser.emailVerified) {
+                    fireDb.ref("users/" + auth.user.uid).update({
+                        emailVerified : true,
+                    });
                     id('loginmsg').innerHTML = "Success!";
                     //navigate to app homescreen
                     ReactDOM.render(
@@ -150,6 +153,7 @@ function Login() {
                             username : to.username,
                             email : to.email,
                             country : Object.keys(countries).find(key => countries[key] === e.options[e.selectedIndex].text),
+                            emailVerified : false,
                         });
                         //send verification email
                         fireAuth.useDeviceLanguage();

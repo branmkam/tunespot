@@ -18,7 +18,7 @@ function World()
         fetchInfo();
     }, []);
 
-    let countries = Object.entries(users).map(u => u[1].country);
+    let countries = Object.entries(users).filter(u => users[u[0]].emailVerified).map(u => u[1].country);
     let tally = {};
     countries.forEach(c => 
     {
