@@ -29,6 +29,21 @@ function Login() {
         fetchInfo();
     }, []);
 
+    //add event listeners
+    document.addEventListener('keypress', function(e){
+        if(e.code == 'Enter')
+        {
+            if(['loginemail', 'loginpassword'].includes(document.activeElement.id))
+            {
+                checkValidLogin();
+            }
+            else if(['signupemail', 'signuppassword', 'signupusername'].includes(document.activeElement.id))
+            {
+                checkValidSignup();
+            }
+        } 
+     });
+
     return (
         <div>
             <section id = "top" class = "hero is-small is-success">
@@ -188,9 +203,9 @@ function Login() {
 
     function forgotPassword()
     {
-        fireAuth.sendPasswordResetEmail(fireAuth.currentUser.email).then(function() {
+        fireAuth.sendPasswordResetEmail(id('loginemail').value).then(function() {
             id('loginmsg').innerHTML = 'Password reset email sent.';
-        }).catch(err => console.log(err));
+        }).catch(err => id('loginmsg').innerHTML = err.message);
     }
 }
 
