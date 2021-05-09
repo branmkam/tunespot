@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/tunespot/static/css/main.0f9a9c78.chunk.css",
-    "main.js": "/tunespot/static/js/main.59317811.chunk.js",
-    "main.js.map": "/tunespot/static/js/main.59317811.chunk.js.map",
+    "main.js": "/tunespot/static/js/main.3187cc57.chunk.js",
+    "main.js.map": "/tunespot/static/js/main.3187cc57.chunk.js.map",
     "runtime-main.js": "/tunespot/static/js/runtime-main.a26e59c5.js",
     "runtime-main.js.map": "/tunespot/static/js/runtime-main.a26e59c5.js.map",
     "static/js/2.990c8dbd.chunk.js": "/tunespot/static/js/2.990c8dbd.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.a26e59c5.js",
     "static/js/2.990c8dbd.chunk.js",
     "static/css/main.0f9a9c78.chunk.css",
-    "static/js/main.59317811.chunk.js"
+    "static/js/main.3187cc57.chunk.js"
   ]
 }
